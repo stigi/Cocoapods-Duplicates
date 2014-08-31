@@ -6,6 +6,9 @@
 //  Copyright (c) 2014 ullrich. All rights reserved.
 //
 
+#import "USAppDelegate.h"
+#import <ReactiveCocoa/ReactiveCocoa.h>
+
 #import <XCTest/XCTest.h>
 
 @interface DupTests : XCTestCase
@@ -28,7 +31,18 @@
 
 - (void)testExample
 {
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
+    USAppDelegate *appDelegate = (USAppDelegate*)[[UIApplication sharedApplication] delegate];
+    RACSubject *subject = appDelegate.subject;
+    
+    XCTAssert([subject isKindOfClass:RACSubject.class],
+              @"Expecting %@<%p> to be kind of %@<%p>",
+              NSStringFromClass(subject.class), subject,
+              NSStringFromClass(RACSubject.class), RACSubject.class);
+    
+    XCTAssertEqual(subject.class, RACSubject.class,
+                   @"Expecting %@<%p> to equal %@<%p>",
+                   NSStringFromClass(subject.class), subject.class,
+                   NSStringFromClass(RACSubject.class), RACSubject.class);
 }
 
 @end
